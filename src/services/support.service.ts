@@ -10,19 +10,19 @@ function calculateBalanceChange(
   transaction: any,
   walletAddress: string,
 ): string {
+  const value = parseInt(transaction.value);
+  // Преобразование с учетом десятичных знаков токена
+  const amount = value / Math.pow(10, transaction.tokenDecimal);
+
   if (transaction.from.toLowerCase() === walletAddress.toLowerCase()) {
     // Транзакция отправлена с адреса кошелька
-    const value = parseInt(transaction.value);
-
-    return `-${value.toFixed(4)} WEI`;
+    return `-${amount.toFixed(4)} tokens`;
   } else if (transaction.to.toLowerCase() === walletAddress.toLowerCase()) {
     // Транзакция получена на адрес кошелька
-    const value = parseInt(transaction.value);
-
-    return `+${value.toFixed(4)} WEI`;
+    return `+${amount.toFixed(4)} tokens`;
   } else {
     // Транзакция не связана с данным кошельком
-    return '0 WEI';
+    return '0 tokens';
   }
 }
 
@@ -52,12 +52,12 @@ async function createExcelDoc(
     const balanceChange = calculateBalanceChange(trade, walletAddress);
 
     worksheet.addRow([
-      trade.tokenSymbol,
-      trade.contractAddress,
-      trade.tokenSymbol, // Предполагается, что оба маркера одинаковы в торговле
-      trade.contractAddress, // Предполагается, что оба маркера одинаковы в торговле
+      walletAddress === trade.from ? 'ETH' : trade.tokenSymbol,
+      trade.from,
+      walletAddress === trade.to ? 'ETH' : trade.tokenSymbol,
+      trade.to,
       new Date(parseInt(trade.timeStamp) * 1000).toLocaleString(),
-      trade.to, // Адрес контракта пула нужно получать отдельно
+      trade.contractAddress,
       'Uniswap V2', // Тип декса нужно получать отдельно
       balanceChange,
     ]);

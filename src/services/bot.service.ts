@@ -102,12 +102,11 @@ bot.command('analyze', async (ctx) => {
     return;
   }
 
-  if (!isValidAddress(commandArguments[1])) {
+  const walletAddress = commandArguments[1];
+  if (!isValidAddress(walletAddress)) {
     ctx.reply('Неверный формат адресa кошелька.');
     return;
   }
-
-  const walletAddress = commandArguments[1];
 
   try {
     // Получение данных о торгах с использованием Etherscan API

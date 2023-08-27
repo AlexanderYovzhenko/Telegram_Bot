@@ -71,7 +71,8 @@ bot.hears(['Пользователь', 'Аналитик'], async (ctx) => {
   };
 
   // Сохранение данных о пользователе
-  await saveUserData(userId, userData);
+  const isResetTimestamp = true;
+  await saveUserData(userId, userData, isResetTimestamp);
 
   ctx.reply(
     `Теперь вы ${role}. У вас осталось ${userData.requestsLeft} запросов.`,
@@ -126,7 +127,9 @@ bot.command('analyze', async (ctx) => {
 
     // Уменьшение количества оставшихся запросов
     userData.requestsLeft--;
-    await saveUserData(userId, userData);
+
+    const isResetTimestamp = false;
+    await saveUserData(userId, userData, isResetTimestamp);
   } catch (error) {
     ctx.reply('Произошла ошибка при получении данных о торгах.');
   }

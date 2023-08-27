@@ -15,8 +15,9 @@ async function getUserData(userId: string): Promise<UserData | undefined> {
 
     if (elapsedTime >= 24 * 60 * 60 * 1000) {
       userData.requestsLeft = userData.role === 'Пользователь' ? 5 : 20;
-      userData.lastResetTimestamp = currentTime;
-      saveUserData(userId, userData);
+
+      const isResetTimestamp = true;
+      saveUserData(userId, userData, isResetTimestamp);
     }
 
     return userData;
@@ -26,8 +27,15 @@ async function getUserData(userId: string): Promise<UserData | undefined> {
 }
 
 // Сохранение данных о пользователе
-async function saveUserData(userId: string, data: UserData) {
-  data.lastResetTimestamp = new Date().getTime();
+async function saveUserData(
+  userId: string,
+  data: UserData,
+  isResetTimestamp: boolean,
+) {
+  if (isResetTimestamp) {
+    data.lastResetTimestamp = new Date().getTime();
+  }
+
   await writeFile(`${userId}.json`, JSON.stringify(data));
 }
 

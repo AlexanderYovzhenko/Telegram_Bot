@@ -1,13 +1,13 @@
-const botCommandList = {
-  start: /\/start/,
-  help: /\/help/,
-  analyze: /\/analyze <адрес кошелька> eth/,
-};
+enum botCommandsList {
+  start,
+  help,
+  analyze,
+}
 
-const botCommandListDescription = {
+const botCommandsListDescription = {
   start: 'Начать взаимодействие',
   help: 'Получить помощь',
   analyze: 'Выгрузка по кошельку',
 };
 
-export { botCommandList, botCommandListDescription };
+export { botCommandsList, botCommandsListDescription };

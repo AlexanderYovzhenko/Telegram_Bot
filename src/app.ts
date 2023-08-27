@@ -1,4 +1,4 @@
-import { bot } from './services/bot.service';
+import { bot } from './services';
 
 bot.launch();
 
